@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Dao.StuTeaMapper">
+    <insert id="insertStuTea" parameterType="java.util.ArrayList">
+        INSERT INTO stu_tea (id_stu, id_tea)
+        VALUES
+        <foreach collection="teaInfos" separator="," item="teaInfo">
+            <foreach collection="teaInfo.stuInfos" separator="," item="stuInfo">
+                (#{teaInfo.id_tea, jdbcType=INTEGER},#{stuInfo.id_stu, jdbcType=INTEGER})
+            </foreach>
+        </foreach>
+    </insert>
+    <delete id="deleteStuTea" parameterType="java.util.ArrayList">
+        DELETE FROM stu_tea
+        WHERE id_tea IN
+        <foreach collection="teaInfos" separator="," open="(" close=")" item="teaInfo">
+            #{teaInfo.id_tea, jdbcType=INTEGER}
+        </foreach>
+    </delete>
+</mapper>
